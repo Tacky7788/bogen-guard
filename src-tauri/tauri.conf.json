@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Bogen Guard",
+  "version": "0.1.0",
+  "identifier": "com.bogen-guard.app",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Bogen Guard",
+        "width": 400,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
+      },
+      {
+        "label": "overlay",
+        "url": "/overlay",
+        "transparent": true,
+        "decorations": false,
+        "alwaysOnTop": true,
+        "fullscreen": false,
+        "maximized": true,
+        "visible": false,
+        "skipTaskbar": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "nsis",
+    "resources": [
+      "binaries/whisper-cli-x86_64-pc-windows-msvc.exe",
+      "binaries/whisper.dll",
+      "binaries/ggml.dll",
+      "binaries/ggml-base.dll",
+      "binaries/ggml-cpu.dll"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}

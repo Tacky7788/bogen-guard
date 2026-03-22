@@ -1,0 +1,9 @@
+/target/
+/models/
+/node_modules/
+/dist/
+*.exe
+*.dll
+/src-tauri/binaries/
+/src-tauri/target/
+app-icon.png

@@ -1,0 +1,40 @@
+html, body {
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body::after {
+  display: none !important;
+}
+
+.overlay-root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background: transparent;
+}
+
+.overlay-image {
+  object-fit: contain;
+  filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.4));
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.overlay-image.overlay-in {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.overlay-image.overlay-show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.overlay-image.overlay-out {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+}
