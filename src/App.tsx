@@ -38,7 +38,7 @@ function App() {
   const [hiraganaMode, setHiraganaModeState] = useState(getHiraganaMode());
   const [displayDuration, setDisplayDuration] = useState(() => {
     const saved = localStorage.getItem("bogen-guard-duration");
-    return saved ? Number(saved) : 3;
+    return saved ? Number(saved) : 5;
   });
   const [selectedModel, setSelectedModel] = useState(() => {
     return localStorage.getItem("bogen-guard-model") || "web-speech";
@@ -131,16 +131,18 @@ function App() {
 
     try {
       const b64: string = await invoke("read_image_base64", { path: randomPath });
-      await invoke("show_overlay", { image: b64, size: imageSize, duration: displayDuration });
+      await invoke("show_overlay", { image: b64, size: imageSize, duration: displayDuration === -1 ? 9999 : displayDuration });
 
       // Set hide timer (resets on each trigger, so last one wins)
       if (overlayTimerRef.current) {
         clearTimeout(overlayTimerRef.current);
       }
-      overlayTimerRef.current = setTimeout(async () => {
-        await invoke("hide_overlay");
-        overlayTimerRef.current = null;
-      }, displayDuration * 1000 + 400);
+      if (displayDuration !== -1) {
+        overlayTimerRef.current = setTimeout(async () => {
+          await invoke("hide_overlay");
+          overlayTimerRef.current = null;
+        }, displayDuration * 1000 + 400);
+      }
     } catch (e) {
       console.error("overlay error:", e);
     }
@@ -432,16 +434,17 @@ function App() {
             <span className="setting-name">表示時間</span>
             <div className="setting-control">
               <input
-                type="range" min="1" max="10" step="0.5"
-                value={displayDuration}
+                type="range" min="1" max="31" step="1"
+                value={displayDuration === -1 ? 31 : displayDuration}
                 onChange={(e) => {
-                  const val = Number(e.target.value);
+                  const raw = Number(e.target.value);
+                  const val = raw >= 31 ? -1 : raw;
                   setDisplayDuration(val);
                   localStorage.setItem("bogen-guard-duration", String(val));
                 }}
                 className="slider"
               />
-              <span className="setting-value">{displayDuration}s</span>
+              <span className="setting-value">{displayDuration === -1 ? "∞" : `${displayDuration}s`}</span>
             </div>
           </div>
 
